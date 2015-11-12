@@ -1,0 +1,9 @@
+
+https://github.com/mevdschee/php-crud-api
+
+RESTful api for crud to mysql or PostgreSQL or Microsoft SQL server.
+
+this works ... like magic ... pay attention to transform output vs regular output.
+  ... ?transform=1 does it at the server ... php_crud_api_transform.js does it at the client.
+
+
