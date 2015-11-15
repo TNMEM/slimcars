@@ -1,11 +1,10 @@
 <?php
 
 // use Slim and NotORM
-// ...this needs composer installed ...
-//require 'vendor/autoload.php';
-// ...this is ok as long as folder exists...
-require 'vendor/slim/slim/Slim/Slim.php';
-\Slim\Slim::registerAutoloader();
+require 'vendor/autoload.php';
+// ...another way...
+//require 'vendor/slim/slim/Slim/Slim.php';
+//\Slim\Slim::registerAutoloader();
 require 'plugins/NotORM.php';
 $app = new \Slim\Slim();
 
