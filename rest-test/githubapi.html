@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Trakt Following - CORS</title>
+  <title>Github Watching - No CORS</title>
   <meta name="description" content="">
   <meta name="author" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,13 +23,13 @@
     <div class="row main">
 
       <div class="five columns scroll">
-        <h5>Trakt TVFollowing List</h5>
-        <ul id="tv-list"></ul>
+        <h5>Github Subscription List</h5>
+        <ul id="git-list"></ul>
       </div>
 
       <div class="seven columns">
         <h5>Description:</h5>
-        <span id="tv-description"></span>
+        <span id="git-description"></span>
       </div>
 
     </div>
@@ -40,43 +40,33 @@
     $(document).ready(function() {
       // jQuery...
       
-      var aName = "louisking";
-      var aList = "tvfollowing";
-      var rootAPI = "trakt-api.php?url=https://api-v2launch.trakt.tv/";
+      var rootAPI = "//api.github.com/users/tnmem/subscriptions";
+      var subs;
       
       findAll();
       
       // Retrive show details when list item is clicked
-	    $(document).on('click', 'ul#tv-list li a', function(e) {
+	    $(document).on('click', 'ul#git-list li a', function(e) {
 	    	e.preventDefault();
-	    	findById($(this).data('slug'));
+	    	var anID = $(this).data('id');
+	    	jQuery.map(subs, function(git) {
+          if(git.id == anID) {
+            console.log("Found: ", anID, git.id);
+    			  $('#git-description').html('Click to Go To: <a href="' + git.html_url + '" target="_blank">' + git.full_name + '</a><br>' + git.description);
+          }
+        });
 	    });
 
       // Get all using PHP on same server to defeat CORS problem...
   	  function findAll() {
     		$.ajax({
     			type: 'GET',
-    			url: rootAPI + 'users/' + aName + '/lists/' + aList + '/items',
+    			url: rootAPI,
     			dataType: 'json',
     			success: function(response){
-    				console.log('Success: ', response);
-    				renderList(response);
-    			},
-    			error: function(xhr, type){
-    			   console.log(xhr, type);
-    			}
-  		  });
-	    }
-	    
-      // Get single show using PHP on same server to defeat CORS problem...
-  	  function findById(slug) {
-    		$.ajax({
-    			type: 'GET',
-    			url: rootAPI + 'shows/' + slug + "?extended=full",
-    			dataType: 'json',
-    			success: function(response){
-    				console.log('Success: ', response);
-    				renderDetails(response);
+    			  subs = response;
+    				console.log('Success: ', subs);
+    				renderList(subs);
     			},
     			error: function(xhr, type){
     			   console.log(xhr, type);
@@ -86,19 +76,12 @@
 	    
       // Render list
     	function renderList(data) {
-    	  var jo = $.parseJSON(data);
-    		$('#tv-list li').remove();
-    		$('#tv-description').text('');
-    		$.each(jo, function(i, tv) {
-    			$('#tv-list').append('<li><a href="#" data-slug="' + tv.show.ids.slug + '">' + tv.show.title + '</a></li>');
+    		$('#git-list li').remove();
+    		$('#git-description').html('');
+    		$.each(data, function(i, git) {
+    			$('#git-list').append('<li>Latest Change: <a href="#" data-id="' + git.id + '">' + git.pushed_at + '<br>' + git.full_name + '</a></li>');
     		});
-    		tinysort('#tv-list>li');
-    	}
-
-      // Render show details
-    	function renderDetails(data) {
-    	  var jo = $.parseJSON(data);
-    		$('#tv-description').html(jo.title + "<br>" + jo.year + '<br>' + jo.overview);
+    		tinysort('#git-list>li',{order:'desc'});
     	}
 
     });
