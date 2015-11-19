@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Trakt Following - CORS</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+  
+  <style>
+  .scroll {
+      width: 100%;
+      height: 100vh;
+      overflow: scroll;
+  }
+  </style>
+  
+</head>
+<body>
+  <div class="container">
+    <div class="row main">
+
+      <div class="five columns scroll">
+        <h5>Trakt TVFollowing List</h5>
+        <ul id="tv-list"></ul>
+      </div>
+
+      <div class="seven columns">
+        <h5>Description:</h5>
+        <span id="tv-description"></span>
+      </div>
+
+    </div>
+  </div>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/tinysort/2.2.2/tinysort.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // jQuery...
+      
+      var aName = "louisking";
+      var aList = "tvfollowing";
+      var rootAPI = "trakt-api.php?url=https://api-v2launch.trakt.tv/";
+      
+      findAll();
+      
+      // Retrive show details when list item is clicked
+	    $(document).on('click', 'ul#tv-list li a', function(e) {
+	    	e.preventDefault();
+	    	findById($(this).data('slug'));
+	    });
+
+      // Get all using PHP on same server to defeat CORS problem...
+  	  function findAll() {
+    		$.ajax({
+    			type: 'GET',
+    			url: rootAPI + 'users/' + aName + '/lists/' + aList + '/items',
+    			dataType: 'json',
+    			success: function(response){
+    				console.log('Success: ', response);
+    				renderList(response);
+    			},
+    			error: function(xhr, type){
+    			   console.log(xhr, type);
+    			}
+  		  });
+	    }
+	    
+      // Get single show using PHP on same server to defeat CORS problem...
+  	  function findById(slug) {
+    		$.ajax({
+    			type: 'GET',
+    			url: rootAPI + 'shows/' + slug + "?extended=full",
+    			dataType: 'json',
+    			success: function(response){
+    				console.log('Success: ', response);
+    				renderDetails(response);
+    			},
+    			error: function(xhr, type){
+    			   console.log(xhr, type);
+    			}
+  		  });
+	    }
+	    
+      // Render list
+    	function renderList(data) {
+    	  var jo = $.parseJSON(data);
+    		$('#tv-list li').remove();
+    		$('#tv-description').text('');
+    		$.each(jo, function(i, tv) {
+    			$('#tv-list').append('<li><a href="#" data-slug="' + tv.show.ids.slug + '">' + tv.show.title + '</a></li>');
+    		});
+    		tinysort('#tv-list>li');
+    	}
+
+      // Render show details
+    	function renderDetails(data) {
+    	  var jo = $.parseJSON(data);
+    		$('#tv-description').html(jo.title + "<br>" + jo.year + '<br>' + jo.overview);
+    	}
+
+    });
+  </script>
+</body>
+</html>
