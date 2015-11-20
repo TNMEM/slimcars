@@ -62,7 +62,7 @@
   	  function findAll() {
     		$.ajax({
     			type: 'GET',
-    			url: rootAPI,
+    			url: rootAPI + "?per_page=100",
     			dataType: 'json',
     			success: function(response){
     			  subs = response;
