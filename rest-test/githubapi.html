@@ -42,7 +42,7 @@
       // jQuery...
       
       var rootAPI = "//api.github.com/users/tnmem/subscriptions";
-      var subs;
+      var subs; // the subscriptions/watching repositories...
       
       findAll();
       
@@ -50,8 +50,8 @@
 	    $(document).on('click', 'ul#git-list li a', function(e) {
 	    	e.preventDefault();
 	    	var anID = $(this).data('id');
-	    	jQuery.map(subs, function(git) {
-          if(git.id == anID) {
+	    	$.map(subs, function(git) {
+          if (git.id == anID) {
             console.log("Found: ", anID, git.id);
     			  $('#git-description').html('Click to Go To: <a href="' + git.html_url + '" target="_blank">' + git.full_name + '</a><br>' + git.description);
           }

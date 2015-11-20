@@ -44,6 +44,7 @@
       var aName = "louisking";
       var aList = "tvfollowing";
       var rootAPI = "trakt-api.php?url=https://api-v2launch.trakt.tv/";
+      var cal; // calendar of upcoming episodes...
       
       findAll();
       
@@ -55,13 +56,27 @@
 
       // Get all using PHP on same server to defeat CORS problem...
   	  function findAll() {
+  	    // shows from a list...
     		$.ajax({
     			type: 'GET',
     			url: rootAPI + 'users/' + aName + '/lists/' + aList + '/items',
     			dataType: 'json',
     			success: function(response){
-    				console.log('Success: ', response);
+    				console.log('Success list : ', response);
     				renderList(response);
+    			},
+    			error: function(xhr, type){
+    			   console.log(xhr, type);
+    			}
+  		  });
+  		  // calender of all upcoming shows...
+    		$.ajax({
+    			type: 'GET',
+    			url: rootAPI + "calendars/all/shows?extended=full",
+    			dataType: 'json',
+    			success: function(response){
+    				cal = $.parseJSON(response);
+    				console.log('Success cal : ', cal);
     			},
     			error: function(xhr, type){
     			   console.log(xhr, type);
@@ -100,6 +115,14 @@
     	function renderDetails(data) {
     	  var jo = $.parseJSON(data);
     		$('#tv-description').html(jo.title + "<br>" + jo.year + '<br>' + jo.overview);
+    		//find any upcoming episodes...
+    		var aSlug = jo.ids.slug;
+    		$.map(cal, function(tv) {
+    		  if (tv.show.ids.slug == aSlug) {
+    		    console.log('matched: ', tv.show.ids.slug, aSlug);
+    		    $('#tv-description').append('<br><br>Upcoming: ' + tv.show.network + ' ... ' + tv.first_aired + ' ... s' + tv.episode.season + 'e' + tv.episode.number + ' ... <a href="http://trakt.tv/shows/' + aSlug + '" target="_blank">'  + tv.episode.title + '</a> ... ' + tv.episode.overview);
+    		  }
+    		});
     	}
 
     });
