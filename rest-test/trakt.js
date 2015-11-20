@@ -44,7 +44,7 @@ $(document).ready(function() {
       console.log(r1[0]);
       console.log('r2:');
       console.log(r2[0]);
-      // technically, should wait for parse before render too...
+      // if pqrseJSON is async, i might should wait for parse before render too...
       cal = $.parseJSON(r1[0]);
       renderList(r2[0]);
     });
