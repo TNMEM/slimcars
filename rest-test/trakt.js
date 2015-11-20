@@ -45,7 +45,8 @@ $(document).ready(function() {
       console.log('r2:');
       console.log(r2[0]);
       // if pqrseJSON is async, i might should wait for parse before render too...
-      cal = $.parseJSON(r1[0]);
+      cal = r1[0];
+      //cal = $.parseJSON(r1[0]);
       renderList(r2[0]);
     });
 	}
@@ -69,8 +70,8 @@ $(document).ready(function() {
   }
   
   // Render list
-	function renderList(data) {
-	  var jo = $.parseJSON(data);
+	function renderList(jo) {
+	  //var jo = $.parseJSON(data);
 		$('#tv-list li').remove();
 		$('#tv-description').html('');
 		$.each(jo, function(i, tv) {
@@ -80,8 +81,8 @@ $(document).ready(function() {
 	}
 
   // Render show details
-	function renderDetails(data) {
-	  var jo = $.parseJSON(data);
+	function renderDetails(jo) {
+	  //var jo = $.parseJSON(data);
 		$('#tv-description').html(jo.title + "<br>" + jo.year + '<br>' + jo.overview);
 		//find any upcoming episodes...
 		var aSlug = jo.ids.slug;

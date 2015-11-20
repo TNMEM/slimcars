@@ -15,8 +15,11 @@ function listTV () {
   );
   $context=stream_context_create($options);
   $data=file_get_contents($_GET["url"],false,$context);
+  //$data is already json coming from "real" server...
+  //header('Content-Type: text/javascript; charset=utf8');
+  //echo json_encode($data, JSON_FORCE_OBJECT);
   header("Content-Type", "application/json");
-  echo json_encode($data, JSON_FORCE_OBJECT);
+  echo $data;
 };
 
 ?>
