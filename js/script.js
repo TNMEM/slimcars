@@ -69,95 +69,96 @@ $(document).ready(function() {
 
 	// Get all cars
 	function findAll() {
-		$.ajax({
+		console.log('findAll');
+		var fa = $.ajax({
 			type: 'GET',
 			url: rootURL + 'cars',
-			dataType: 'json',
-			success: function(response){
-				console.log('Success: ', response);
-				renderList(withTransform(response));
-			},
-			error: function(xhr, type){
-			   console.log(xhr, type);
-			}
+			dataType: 'json'
+		});
+		fa.done(function(response){
+			console.log('Done: ', response);
+			renderList(withTransform(response));
+		});
+		fa.fail(function(xhr, type){
+		   console.log(xhr, type);
 		});
 	}
 
 	// Get car by id
 	function findById(id) {
 		console.log('findById:' + id);
-		$.ajax({
+		var fi = $.ajax({
 			type: 'GET',
 			url: rootURL + 'cars/' + id,
-			dataType: 'json',
-			success: function(data){
-				$('#btnDelete').show();
-				console.log('findById success: ' + data);
-				currentCar = data;
-				renderDetails(currentCar);
-			},
-			error: function(xhr, type){
-			   console.log(xhr, type);
-			}
+			dataType: 'json'
+		});
+		fi.done(function(data){
+			$('#btnDelete').show();
+			console.log('findById Done: ' + data);
+			currentCar = data;
+			renderDetails(currentCar);
+		});
+		fi.fail(function(xhr, type){
+		   console.log(xhr, type);
 		});
 	}
 
 	// Add new car
 	function addCar() {
 		console.log('addCar');
-		$.ajax({
+		var ac = $.ajax({
 			type: 'POST',
 			url: rootURL + 'cars',
 			dataType: 'json',
 			data: $.param(getForm()), // URI encode data for request
-			success: function(data, xhr, type, textStatus) {
-				console.log(data, xhr, type, textStatus);
-				alert('Car added successfully');
-				$('#btnDelete').show();
-				$('#id').val(data.id);
-				findAll(); // reload list
-			},
-			error: function(xhr, type, textStatus, errorThrown) {
-				console.log(xhr, type, errorThrown, textStatus);
-			}
+		});
+		ac.done(function(data, xhr, type, textStatus) {
+			console.log(data, xhr, type, textStatus);
+			alert('Car added successfully');
+			$('#btnDelete').show();
+			$('#id').val(data.id);
+			findAll(); // reload list
+		});
+		ac.fail(function(xhr, type, textStatus, errorThrown) {
+			console.log(xhr, type, errorThrown, textStatus);
 		});
 	}
 
 	// Update a car
 	function updateCar($id) {
 		console.log('updateCar');
-		$.ajax({
+		var uc = $.ajax({
 			type: 'PUT',
 			url: rootURL + 'cars/' + $('#id').val(),
 			dataType: 'json',
-			data: $.param(getForm()), // URI encode data for request
-			success: function(data, xhr, type, textStatus) {
-				console.log(data, xhr, type, textStatus);
-				alert('Car successfully updated');
-				findAll(); // reload list
-			},
-			error: function(xhr, type, textStatus, errorThrown) {
-				console.log(xhr, type, errorThrown, textStatus);
-			}
+			data: $.param(getForm()) // URI encode data for request
+		});
+		uc.done(function(data, xhr, type, textStatus) {
+			console.log(data, xhr, type, textStatus);
+			alert('Car successfully updated');
+			findAll(); // reload list
+		});
+		uc.fail(function(xhr, type, textStatus, errorThrown) {
+			console.log(xhr, type, errorThrown, textStatus);
 		});
 	}
 
 	// Delete a car
 	function deleteCar($id) {
 		console.log('deleteCar');
-		$.ajax({
+		var dc = $.ajax({
 			type: 'DELETE',
-			url: rootURL + 'cars/' + $('#id').val(),
-			success: function(data, xhr, type, textStatus) {
-				console.log(data, xhr, type, textStatus);
-				alert('Car successfully deleted');
-				newCar(); // zero out the form
-				findAll(); // reload list
-			},
-			error: function(xhr, type, textStatus, errorThrown) {
-				console.log(xhr, type, errorThrown, textStatus);
-			}
-		})
+			url: rootURL + 'cars/' + $('#id').val()
+		});
+		dc.done(function(data, xhr, type, textStatus) {
+			console.log(data, xhr, type, textStatus);
+			alert('Car successfully deleted');
+			newCar(); // zero out the form
+			findAll(); // reload list
+		});
+		dc.fail(function(xhr, type, textStatus, errorThrown) {
+			console.log(xhr, type, errorThrown, textStatus);
+		});
 	}
 
 	// Render list of all cars
