@@ -20,6 +20,7 @@ $(document).ready(function() {
 		var gc = $.ajax({
 			type: 'GET',
 			url: rootAPI + "calendars/all/shows?extended=full",
+			//url: "trakt-api.php?url=http://api.tvmaze.com/lookup/shows?thetvdb=261738",
 			dataType: 'json'
 	  });
 		gc.fail(function(xhr, type){
@@ -86,11 +87,11 @@ $(document).ready(function() {
 		$('#tv-description').html(jo.title + "<br>" + jo.year + '<br>' + jo.overview);
 		//find any upcoming episodes...
 		var aSlug = jo.ids.slug;
-		$.map(cal, function(tv) {
+		$.grep(cal, function(tv) {
 		  if (tv.show.ids.slug == aSlug) {
 		  	console.log('found:');
 		    console.log(tv.show.ids.slug, aSlug);
-		    $('#tv-description').append('<br><br>Upcoming: ' + tv.show.network + ' ... ' + tv.first_aired + ' ... s' + tv.episode.season + 'e' + tv.episode.number + ' ... <a href="http://trakt.tv/shows/' + aSlug + '" target="_blank">'  + tv.episode.title + '</a> ... ' + tv.episode.overview);
+		    $('#tv-description').append('<br><br>Status: ' + tv.show.status + '<br><br>Upcoming: ' + tv.show.network + ' ... ' + tv.first_aired + ' ... s' + tv.episode.season + 'e' + tv.episode.number + ' ... <a href="http://trakt.tv/shows/' + aSlug + '" target="_blank">'  + tv.episode.title + '</a> ... ' + tv.episode.overview);
 		  }
 		});
 	}
