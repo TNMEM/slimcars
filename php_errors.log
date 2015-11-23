@@ -40,3 +40,9 @@
 [22-Nov-2015 15:08:31 UTC] PHP   1. {main}() /home/ubuntu/workspace/rest-test/trakt-api.php:0
 [22-Nov-2015 15:08:31 UTC] PHP   2. listTV() /home/ubuntu/workspace/rest-test/trakt-api.php:5
 [22-Nov-2015 15:08:31 UTC] PHP   3. file_get_contents() /home/ubuntu/workspace/rest-test/trakt-api.php:17
+[23-Nov-2015 18:35:14 UTC] PHP Warning:  file_get_contents(https://api-v2launch.trakt.tv/users/louisking/lists/tvfollowing/items): failed to open stream: HTTP request failed! HTTP/1.1 504 Gateway Time-out
+ in /home/ubuntu/workspace/rest-test/trakt-api.php on line 17
+[23-Nov-2015 18:35:14 UTC] PHP Stack trace:
+[23-Nov-2015 18:35:14 UTC] PHP   1. {main}() /home/ubuntu/workspace/rest-test/trakt-api.php:0
+[23-Nov-2015 18:35:14 UTC] PHP   2. listTV() /home/ubuntu/workspace/rest-test/trakt-api.php:5
+[23-Nov-2015 18:35:14 UTC] PHP   3. file_get_contents() /home/ubuntu/workspace/rest-test/trakt-api.php:17

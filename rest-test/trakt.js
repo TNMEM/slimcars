@@ -20,7 +20,10 @@ $(document).ready(function() {
 		var gc = $.ajax({
 			type: 'GET',
 			url: rootAPI + "calendars/all/shows?extended=full",
+			// tvmaze lookup doesn't have everything...
 			//url: "trakt-api.php?url=http://api.tvmaze.com/lookup/shows?thetvdb=261738",
+			// tvdb returns good stuff in xml not json...
+			//url: "trakt-api.php?url=http://thetvdb.com/api/F0D98A3CE6AEF203/series/280847/all",
 			dataType: 'json'
 	  });
 		gc.fail(function(xhr, type){
@@ -45,9 +48,12 @@ $(document).ready(function() {
       console.log(r1[0]);
       console.log('r2:');
       console.log(r2[0]);
-      // if pqrseJSON is async, i might should wait for parse before render too...
+      // example of tvdb xml data handling...
+      //var $xml = r1[0];
+      //$($xml).find("Data>Series>id").each(function(){
+      //	console.log($(this).text());
+      //});
       cal = r1[0];
-      //cal = $.parseJSON(r1[0]);
       renderList(r2[0]);
     });
 	}
