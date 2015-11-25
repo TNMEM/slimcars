@@ -13,7 +13,7 @@ $(document).ready(function() {
   	$.map(subs, function(git) {
       if (git.id == anID) {
         console.log("Found: ", anID, git.id);
-			  $('#git-description').html('Click to Go To: <a href="' + git.html_url + '" target="_blank">' + git.full_name + '</a><br>' + git.description);
+			  $('#git-description').html('Go To: <a href="' + git.html_url + '" target="_blank">' + git.full_name + '</a><br>' + git.description);
       }
     });
   });
@@ -40,9 +40,9 @@ $(document).ready(function() {
 		$('#git-list li').remove();
 		$('#git-description').html('');
 		$.each(data, function(i, git) {
-			$('#git-list').append('<li>Latest Change: <a href="#" data-id="' + git.id + '">' + git.pushed_at + '<br>' + git.full_name + '</a></li>');
+			$('#git-list').append('<li><a href="#" data-id="' + git.id + '">'  + git.full_name + '</a><br><span id="sorter">' + git.pushed_at + '</span></li>');
 		});
-		tinysort('#git-list>li',{order:'desc'});
+		tinysort('#git-list>li',{selector:'span',order:'desc'});
 	}
 
 });
